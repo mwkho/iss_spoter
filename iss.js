@@ -31,9 +31,13 @@ const fetchMyIP = (callback) => {
 
 const fetchCoordsByIP = (ip, callback) => {
   request(`https://freegeoip.app/json/${ip}`, (err, resp, data) =>{
-    if(err){
-      callback(err, null);
-      return
+    if (err) {
+      callback(`There was an error in retreiving your IP.\n ${err}`, null);
+      return;
+    }
+    if (resp.serviceCode !== 200) {
+      callback(`Status code ${resp.serviceCode} when retrieving IP. Response ${data}`, null);
+      return;
     }
     const coords = {};
     coords["latitude"] = JSON.parse(data)["latitude"];
