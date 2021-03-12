@@ -55,8 +55,8 @@ const fetchISSFlyOverTimes = (coords, callback) => {
       callback(`There was an error.\n ${err}`, null);
       return
     }
-    if(resp.serviceCode !== 200){
-      callback(Error(`Status code ${resp.serviceCode}\n ${body}`), null)
+    if(resp.statusCode !== 200){
+      callback(Error(`Status code ${resp.statusCode}\n ${body}`), null)
       return
     }
     
