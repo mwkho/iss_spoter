@@ -29,21 +29,40 @@ const fetchMyIP = (callback) => {
 };
 
 
-const fetchCoordsByIP = (ip, callback) => {
-  request(`https://freegeoip.app/json/${ip}`, (err, resp, data) =>{
-    if (err) {
-      callback(`There was an error in retreiving your IP.\n ${err}`, null);
-      return;
+  const fetchCoordsByIP = (ip, callback) => {
+    request(`https://freegeoip.app/json/${ip}`, (err, resp, data) =>{
+      if (err) {
+        callback(`There was an error in retrieving your IP.\n ${err}`, null);
+        return;
+      }
+      if (resp.statusCode !== 200) {
+        callback(Error(`Status code ${resp.statusCode} when retrieving IP. Response ${data}`), null);
+        return;
+      }
+      const coords = {};
+      coords["latitude"] = JSON.parse(data)["latitude"];
+      coords["longitude"] = JSON.parse(data)["longitude"];
+      callback(null,coords);
+    });
+  };
+
+
+
+const fetchISSFlyOverTimes = (coords, callback) => {
+  request(`http://api.open-notify.org/iss-pass.json?lat=${coords.latitude}&lon=${coords.longitude}`, 
+  (err, resp, body) => {
+    if (err){
+      callback(`There was an error.\n ${err}`, null);
+      return
     }
-    if (resp.serviceCode !== 200) {
-      callback(`Status code ${resp.serviceCode} when retrieving IP. Response ${data}`, null);
-      return;
+    if(resp.serviceCode !== 200){
+      callback(Error(`Status code ${resp.serviceCode}\n ${body}`), null)
+      return
     }
-    const coords = {};
-    coords["latitude"] = JSON.parse(data)["latitude"];
-    coords["longitude"] = JSON.parse(data)["longitude"];
-    callback(err,coords);
+    
+    const response = JSON.parse(body).response
+    callback(null, response);
   });
 };
 
-module.exports = {fetchMyIP, fetchCoordsByIP};
+module.exports = {fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes};

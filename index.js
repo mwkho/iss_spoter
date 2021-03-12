@@ -1,4 +1,4 @@
-const {fetchMyIP, fetchCoordsByIP} = require('./iss');
+const {fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes} = require('./iss');
 
 // const IP = fetchMyIP((err, ip) => {
 //   if (err) {
@@ -16,3 +16,4 @@ const {fetchMyIP, fetchCoordsByIP} = require('./iss');
 //   }
 //   console.log(data);
 // });
+
