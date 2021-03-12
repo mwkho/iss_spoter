@@ -17,3 +17,11 @@ const {fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes} = require('./iss');
 //   console.log(data);
 // });
 
+
+const flyOver = fetchISSFlyOverTimes({ latitude: 49.2476, longitude: -123.1234 }, (err, data) =>{
+  if (err){
+    console.log(err);
+    return
+  }
+  console.log(data);
+});
