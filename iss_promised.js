@@ -1,7 +1,7 @@
 const request = require('request-promise-native');
 
 const fetchMyIP = () => {
-  return request('https://api.ipify.org?format=json')
+  return request('https://api.ipify.org?format=json');
 };
 
 
@@ -15,15 +15,16 @@ const fetchISSFlyOverTimes = (data) => {
   coords["latitude"] = JSON.parse(data)["latitude"];
   coords["longitude"] = JSON.parse(data)["longitude"];
   return request(`http://api.open-notify.org/iss-pass.json?lat=${coords.latitude}&lon=${coords.longitude}`);
-}
+};
 
-const nextISSTimesForMyLocation = (callback) => {
-  fetchMyIP()
-  .then(fetchCoordsByIP)
-  .then(fetchISSFlyOverTimes)
-  .then((body) => { 
-    const passTimes = JSON.parse(body).response
-    callback(passTimes)});
-  };
+const nextISSTimesForMyLocation = () => {
+  return fetchMyIP()
+    .then(fetchCoordsByIP)
+    .then(fetchISSFlyOverTimes)
+    .then((body) => {
+      const passTimes = JSON.parse(body).response;
+      return (passTimes);
+    });
+};
 
-module.exports = {nextISSTimesForMyLocation}
+module.exports = {nextISSTimesForMyLocation};
